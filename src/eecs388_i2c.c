@@ -88,14 +88,13 @@ void breakup(int bigNum, uint8_t *low, uint8_t *high)
 
 void steering(int angle)
 {
-    /*
-        Write Task 2 code here
-    */
+    // Please note that the steering is at LED1
+    // and that driving is at LED0
     int duty = getServoCycle(angle);
     uint8_t H = 0;
     uint8_t L = 0;
     breakup(duty, &L, &H);
-    bufWrite[0] = PCA9685_LED0_ON_L;
+    bufWrite[0] = PCA9685_LED0_ON_L + 0x4; 
     bufWrite[1] = 0;
     bufWrite[2] = 0;
     bufWrite[3] = L;
@@ -325,7 +324,9 @@ calibr
         -Drive forward (wait for 2 seconds)
         -Set steering heading to 0 degrees (wait for 2 seconds)
         -Stop the motor
-    */   driveForward(1);
+    */
+      
+   driveForward(1);
    stopMotor();
    delay(2000);
    steering(0);
