@@ -66,6 +66,11 @@ void breakup(int bigNum, uint8_t *low, uint8_t *high)
     /*
     Write Task 1 code here
     */
+
+    // This can be replaced with two lines
+    //*low = bigNum & 0xff; //00000000 11111111b
+    //*high = (bigNum & 0xff00) >> 8; //11111111 00000000b
+    
     int i, j;
 
     for (i = 0; i < 8; i++)
