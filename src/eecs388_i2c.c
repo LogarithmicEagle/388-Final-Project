@@ -124,7 +124,7 @@ void stopMotor()
     uint8_t H = 0;
     uint8_t L = 0;
     breakup(280, &L, &H);
-    bufWrite[0] = PCA9685_LED0_ON_L +0x04;
+    bufWrite[0] = PCA9685_LED0_ON_L;
     bufWrite[1] = 0;
     bufWrite[2] = 0;
     bufWrite[3] = L;
@@ -158,7 +158,7 @@ void driveForward(uint8_t speedFlag)
     uint8_t L = 0;
     int input = 311+(speedFlag<<1);
     breakup(input, &L, &H);
-    bufWrite[0] = PCA9685_LED0_ON_L+0x04;
+    bufWrite[0] = PCA9685_LED0_ON_L;
     bufWrite[1] = 0;
     bufWrite[2] = 0;
     bufWrite[3] = L;
@@ -190,7 +190,7 @@ void driveReverse(uint8_t speedFlag)
     uint8_t L = 0;
     int input = 269-(speedFlag<<1);
     breakup(input, &L, &H);
-    bufWrite[0] = PCA9685_LED0_ON_L + 0x04;
+    bufWrite[0] = PCA9685_LED0_ON_L;
     bufWrite[1] = 0;
     bufWrite[2] = 0;
     bufWrite[3] = L;
@@ -321,18 +321,26 @@ calibr
         -Drive forward (wait for 2 seconds)
         -Change the steering heading to 20 degrees (wait for 2 seconds)
         -Stop the motor (wait for 2 seconds)
-        -Drive forward (wait for 2 seconds)
+        -Drive reverse (wait for 2 seconds)
         -Set steering heading to 0 degrees (wait for 2 seconds)
         -Stop the motor
     */
-      
-   driveForward(1);
-   stopMotor();
-   delay(2000);
-   steering(0);
-    int i;
-    for (i=0; i<20; i++){
-        delay(1000);
-        steering((17*i)%45);
-    }
+
+    //Configure motors
+    stopMotor();
+    delay(2000);
+
+    //Put together actions
+    steering(0);
+    driveForward(1);
+    delay(2000);
+    steering(20);
+    stopMotor();
+    delay(2000);
+    driveReverse(1);
+    delay(2000);
+    steering(0);
+    delay(2000);
+    stopMotor();
+
 }
